@@ -1,0 +1,197 @@
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo-mark">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#grad)"/>
+          <path d="M16 8a5 5 0 1 1 0 10A5 5 0 0 1 16 8zm0 12c5.33 0 9 2.24 9 4v1H7v-1c0-1.76 3.67-4 9-4z" fill="white"/>
+          <defs>
+            <linearGradient id="grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4f8ef7"/>
+              <stop offset="1" stop-color="#1a3f8a"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div>
+        <h1 class="app-title">Agenda de Contatos</h1>
+        <p class="app-subtitle">IFRN · Programação para Internet</p>
+      </div>
+    </div>
+    <div class="header-counter">
+      <span class="counter-num">{{ contatos.length }}</span>
+      <span class="counter-label">{{ contatos.length === 1 ? 'contato' : 'contatos' }}</span>
+    </div>
+  </header>
+
+  <div class="main-content">
+
+    <!-- FORMULÁRIO -->
+    <section class="form-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          {{ contatoEditandoIndex !== null ? '✏️ Editar Contato' : '+ Novo Contato' }}
+        </h2>
+      </div>
+
+      <!-- Mensagem de sucesso -->
+      <div class="alert-success" *ngIf="mensagemSucesso">
+        <span>✓</span> {{ mensagemSucesso }}
+      </div>
+
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-grid">
+
+          <!-- Nome -->
+          <div class="field-group">
+            <label class="field-label" for="nome">Nome completo</label>
+            <input
+              id="nome"
+              type="text"
+              class="field-input"
+              [class.field-error]="isInvalid('nome')"
+              formControlName="nome"
+              placeholder="Ex: Maria Silva"
+            />
+            <span class="error-msg" *ngIf="isInvalid('nome')">
+              <ng-container *ngIf="formulario.get('nome')?.errors?.['required']">Nome é obrigatório.</ng-container>
+              <ng-container *ngIf="formulario.get('nome')?.errors?.['minlength']">Mínimo 2 caracteres.</ng-container>
+            </span>
+          </div>
+
+          <!-- Telefone -->
+          <div class="field-group">
+            <label class="field-label" for="telefone">Telefone</label>
+            <input
+              id="telefone"
+              type="tel"
+              class="field-input"
+              [class.field-error]="isInvalid('telefone')"
+              formControlName="telefone"
+              placeholder="(84) 99999-0000"
+            />
+            <span class="error-msg" *ngIf="isInvalid('telefone')">
+              <ng-container *ngIf="formulario.get('telefone')?.errors?.['required']">Telefone é obrigatório.</ng-container>
+              <ng-container *ngIf="formulario.get('telefone')?.errors?.['pattern']">Formato inválido.</ng-container>
+            </span>
+          </div>
+
+          <!-- Email -->
+          <div class="field-group field-full">
+            <label class="field-label" for="email">E-mail</label>
+            <input
+              id="email"
+              type="email"
+              class="field-input"
+              [class.field-error]="isInvalid('email')"
+              formControlName="email"
+              placeholder="exemplo@email.com"
+            />
+            <span class="error-msg" *ngIf="isInvalid('email')">
+              <ng-container *ngIf="formulario.get('email')?.errors?.['required']">E-mail é obrigatório.</ng-container>
+              <ng-container *ngIf="formulario.get('email')?.errors?.['email']">E-mail inválido.</ng-container>
+            </span>
+          </div>
+
+          <!-- Aniversário -->
+          <div class="field-group">
+            <label class="field-label" for="aniversario">Aniversário</label>
+            <input
+              id="aniversario"
+              type="date"
+              class="field-input"
+              [class.field-error]="isInvalid('aniversario')"
+              formControlName="aniversario"
+            />
+            <span class="error-msg" *ngIf="isInvalid('aniversario')">Data obrigatória.</span>
+          </div>
+
+          <!-- Tipo -->
+          <div class="field-group">
+            <label class="field-label" for="tipo">Tipo de contato</label>
+            <select
+              id="tipo"
+              class="field-input field-select"
+              [class.field-error]="isInvalid('tipo')"
+              formControlName="tipo"
+            >
+              <option value="" disabled selected>Selecione...</option>
+              <option *ngFor="let t of tiposContato" [value]="t">{{ t }}</option>
+            </select>
+            <span class="error-msg" *ngIf="isInvalid('tipo')">Selecione um tipo.</span>
+          </div>
+
+        </div>
+
+        <!-- Botões -->
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">
+            {{ contatoEditandoIndex !== null ? 'Salvar alterações' : 'Adicionar contato' }}
+          </button>
+          <button
+            type="button"
+            class="btn-secondary"
+            *ngIf="contatoEditandoIndex !== null"
+            (click)="cancelarEdicao()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- TABELA DE CONTATOS -->
+    <section class="table-section" *ngIf="contatos.length > 0">
+      <div class="section-header">
+        <h2 class="section-title">Contatos cadastrados</h2>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="contatos-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Contato</th>
+              <th>Telefone</th>
+              <th>E-mail</th>
+              <th>Aniversário</th>
+              <th>Tipo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let contato of contatos; let i = index" class="table-row">
+              <td class="td-index">{{ i + 1 }}</td>
+              <td class="td-nome">
+                <div class="avatar">{{ getIniciais(contato.getNome()) }}</div>
+                <span>{{ contato.getNome() }}</span>
+              </td>
+              <td>{{ contato.getTelefone() }}</td>
+              <td class="td-email">{{ contato.getEmail() }}</td>
+              <td>{{ formatarData(contato.getAniversario()) }}</td>
+              <td>
+                <span class="tipo-badge" [ngClass]="getTipoBadgeClass(contato.getTipo())">
+                  {{ contato.getTipo() }}
+                </span>
+              </td>
+              <td class="td-acoes">
+                <button class="btn-edit" (click)="editarContato(i)" title="Editar">✏️</button>
+                <button class="btn-delete" (click)="removerContato(i)" title="Remover">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ESTADO VAZIO -->
+    <div class="empty-state" *ngIf="contatos.length === 0">
+      <div class="empty-icon">📋</div>
+      <p class="empty-title">Nenhum contato ainda</p>
+      <p class="empty-subtitle">Preencha o formulário acima para adicionar seu primeiro contato.</p>
+    </div>
+
+  </div>
+</div>
