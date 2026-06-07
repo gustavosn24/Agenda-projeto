@@ -13,7 +13,7 @@
   --accent-dim: rgba(79, 142, 247, 0.12);
   --success: #22c55e;
   --error: #f87171;
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: arial;
   --font-body: 'DM Sans', 'Segoe UI', sans-serif;
   --radius: 12px;
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
@@ -21,6 +21,8 @@
 
 /* ===== RESET ===== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+
 
 /* ===== PAGE ===== */
 .page-wrapper {

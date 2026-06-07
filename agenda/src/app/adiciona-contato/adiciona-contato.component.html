@@ -1,6 +1,5 @@
 <div class="page-wrapper">
 
-  <!-- HEADER -->
   <header class="app-header">
     <div class="header-content">
       <div class="logo-mark">
@@ -17,7 +16,7 @@
       </div>
       <div>
         <h1 class="app-title">Agenda de Contatos</h1>
-        <p class="app-subtitle">IFRN · Programação para Internet</p>
+        <p class="app-subtitle">Seus contatos organizados em um só lugar</p>
       </div>
     </div>
     <div class="header-counter">
@@ -32,11 +31,10 @@
     <section class="form-section">
       <div class="section-header">
         <h2 class="section-title">
-          {{ contatoEditandoIndex !== null ? '✏️ Editar Contato' : '+ Novo Contato' }}
+          {{ contatoEditandoIndex !== null ? '✏️ Editar Contato' : ' Novo Contato' }}
         </h2>
       </div>
 
-      <!-- Mensagem de sucesso -->
       <div class="alert-success" *ngIf="mensagemSucesso">
         <span>✓</span> {{ mensagemSucesso }}
       </div>
@@ -44,7 +42,6 @@
       <form [formGroup]="formulario" (ngSubmit)="onSubmit()" novalidate>
         <div class="form-grid">
 
-          <!-- Nome -->
           <div class="field-group">
             <label class="field-label" for="nome">Nome completo</label>
             <input
@@ -61,7 +58,6 @@
             </span>
           </div>
 
-          <!-- Telefone -->
           <div class="field-group">
             <label class="field-label" for="telefone">Telefone</label>
             <input
@@ -78,7 +74,6 @@
             </span>
           </div>
 
-          <!-- Email -->
           <div class="field-group field-full">
             <label class="field-label" for="email">E-mail</label>
             <input
@@ -95,7 +90,6 @@
             </span>
           </div>
 
-          <!-- Aniversário -->
           <div class="field-group">
             <label class="field-label" for="aniversario">Aniversário</label>
             <input
