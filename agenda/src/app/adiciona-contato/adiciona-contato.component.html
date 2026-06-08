@@ -27,7 +27,6 @@
 
   <div class="main-content">
 
-    <!-- FORMULÁRIO -->
     <section class="form-section">
       <div class="section-header">
         <h2 class="section-title">
@@ -102,7 +101,6 @@
             <span class="error-msg" *ngIf="isInvalid('aniversario')">Data obrigatória.</span>
           </div>
 
-          <!-- Tipo -->
           <div class="field-group">
             <label class="field-label" for="tipo">Tipo de contato</label>
             <select
@@ -119,7 +117,6 @@
 
         </div>
 
-        <!-- Botões -->
         <div class="form-actions">
           <button type="submit" class="btn-primary">
             {{ contatoEditandoIndex !== null ? 'Salvar alterações' : 'Adicionar contato' }}
@@ -136,7 +133,6 @@
       </form>
     </section>
 
-    <!-- TABELA DE CONTATOS -->
     <section class="table-section" *ngIf="contatos.length > 0">
       <div class="section-header">
         <h2 class="section-title">Contatos cadastrados</h2>
@@ -180,7 +176,6 @@
       </div>
     </section>
 
-    <!-- ESTADO VAZIO -->
     <div class="empty-state" *ngIf="contatos.length === 0">
       <div class="empty-icon">📋</div>
       <p class="empty-title">Nenhum contato ainda</p>
